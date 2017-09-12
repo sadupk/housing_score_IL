@@ -55,21 +55,29 @@ def range_test(long1, lat1, long2, lat2, radius):
     else:
         return False
 
-with open('data/csv-out/score-out.csv', 'rwb') as grid_open:
-    grid = csv.DictReader(grid_open)
-    for grid_longlat in grid:
-        print('Searching school around: {0}'.format(grid_longlat))
-        with open('data/csv-source/schools-IL.csv', 'r') as schools_open:
-            schools_il = csv.DictReader(schools_open)
-            print('Opened Schools CSV')
-            for school_longlat in schools_il:
-                is_in_radius = range_test(grid_longlat['long'],
-                grid_longlat['lat'], school_longlat['LONCOD09'],
-                school_longlat['LATCOD09'],1000)
-                if is_in_radius == True:
-                    print('School {0} within '
-                    'radius!'.format(school_longlat['SCHNAM09']))
-                   
+with open('data/csv-out/final-score.csv','wb') as score:
+    fieldnames = ['lat', 'long', 'has_school']
+    score_writer = csv.DictWriter(score, fieldnames=fieldnames)
+    score_writer.writeheader()
+
+    with open('data/csv-out/score-out.csv', 'rb') as grid_open:
+        grid = csv.DictReader(grid_open)
+        for grid_longlat in grid:
+            print('Searching school around: {0}'.format(grid_longlat))
+            school_nearby = False
+            with open('data/csv-source/schools-IL.csv', 'r') as schools_open:
+                schools_il = csv.DictReader(schools_open)
+                print('Opened Schools CSV')
+                if school_nearby == False:
+                    for school_longlat in schools_il:
+                        is_in_radius = range_test(grid_longlat['long'],
+                        grid_longlat['lat'], school_longlat['LONCOD09'],
+                        school_longlat['LATCOD09'],1000)
+                        if is_in_radius == True:
+                            school_nearby = True
+                            print('School {0} within '
+                            'radius!'.format(school_longlat['SCHNAM09']))
+            score_writer.writerow(dict(grid_longlat, **{'has_school': school_nearby}))                   
 
 
     
