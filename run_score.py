@@ -1,10 +1,10 @@
-from core import maptools
-
 import shapely.geometry
 import pyproj
 import csv
 import math
 
+from core import maptools
+from core.config import AppConfig
 '''
 nw_corner = input("NW corner coordinates (long,lat): ")
 print("NW corner = " + str(nw_corner))
@@ -17,6 +17,11 @@ se_corner = shapely.geometry.Point(se_corner)
 step_size = input("Step size in meters: ")
 print("Step size  = " + str(step_size))
 '''
+
+app_config = AppConfig()
+google_api_key = app_config.get('google_api.api_key')
+print(google_api_key)
+
 nw_corner = shapely.geometry.Point(-87.8, 41.88)
 se_corner = shapely.geometry.Point(-87.73, 41.97)
 

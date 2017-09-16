@@ -56,7 +56,7 @@ def merge_graceful(defaults, overrides):
     preferring the override when keys collide,
     or are of different types.
     """
-    for key, val in overrides.iteritems():
+    for key, val in overrides.items():
         if key not in defaults:
             defaults[key] = val
         else:

@@ -46,7 +46,7 @@ class AppConfig(Singleton):
 
         # Let exceptions bubble up?
         config_file = open(config_path, 'rb')
-        tmp_config = json.load(config_file, 'utf-8', object_pairs_hook=OrderedDict)
+        tmp_config = json.load(config_file, object_pairs_hook=OrderedDict)
         config_file.close()
 
         maptools.merge_graceful(self._config, tmp_config)
