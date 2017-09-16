@@ -39,7 +39,7 @@ while x < se_metric[0]:
         y += step_size
     x += step_size
 
-with open('data/csv-out/score-out.csv', 'wb') as of:
+with open('data/csv-out/grid.csv', 'w') as of:
     of.write('long,lat\n')
     for p in gridpoints:
         of.write('{0:f},{1:f}\n'.format(p.x, p.y))
@@ -47,19 +47,18 @@ with open('data/csv-out/score-out.csv', 'wb') as of:
 print('Grid Complete')
 
 
-with open('data/csv-out/final-score.csv','wb') as score:
+with open('data/csv-out/score-out.csv','w') as score:
     fieldnames = ['lat', 'long', 'has_school']
     score_writer = csv.DictWriter(score, fieldnames=fieldnames)
     score_writer.writeheader()
 
-    with open('data/csv-out/score-out.csv', 'rb') as grid_open:
+    with open('data/csv-out/grid.csv', 'r') as grid_open:
         grid = csv.DictReader(grid_open)
         for grid_longlat in grid:
             print('Searching school around: {0}'.format(grid_longlat))
             school_nearby = False
             with open('data/csv-source/schools-IL.csv', 'r') as schools_open:
                 schools_il = csv.DictReader(schools_open)
-                print('Opened Schools CSV')
                 if school_nearby == False:
                     for school_longlat in schools_il:
                         is_in_radius = maptools.range_test(grid_longlat['long'],
