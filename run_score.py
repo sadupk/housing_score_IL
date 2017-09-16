@@ -1,3 +1,5 @@
+from core import maptools
+
 import shapely.geometry
 import pyproj
 import csv
@@ -44,16 +46,6 @@ with open('data/csv-out/score-out.csv', 'wb') as of:
 
 print('Grid Complete')
 
-def range_test(long1, lat1, long2, lat2, radius):
-    # Tests if two coordinates are within a radius (in m) of each other
-    x1,y1 = pyproj.transform(proj_longlat, proj_metric, long1, lat1)
-    x2,y2 = pyproj.transform(proj_longlat, proj_metric, long2, lat2)
-    distance = math.sqrt((x2-x1)**2+(y2-y1)**2)
-    if distance <= radius:
-        return True
-        print('School distance: {0}'.format(distance))
-    else:
-        return False
 
 with open('data/csv-out/final-score.csv','wb') as score:
     fieldnames = ['lat', 'long', 'has_school']
@@ -70,14 +62,11 @@ with open('data/csv-out/final-score.csv','wb') as score:
                 print('Opened Schools CSV')
                 if school_nearby == False:
                     for school_longlat in schools_il:
-                        is_in_radius = range_test(grid_longlat['long'],
+                        is_in_radius = maptools.range_test(grid_longlat['long'],
                         grid_longlat['lat'], school_longlat['LONCOD09'],
                         school_longlat['LATCOD09'],1000)
                         if is_in_radius == True:
                             school_nearby = True
                             print('School {0} within '
                             'radius!'.format(school_longlat['SCHNAM09']))
-            score_writer.writerow(dict(grid_longlat, **{'has_school': school_nearby}))                   
-
-
-    
+            score_writer.writerow(dict(grid_longlat, **{'has_school': school_nearby}))                       

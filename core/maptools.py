@@ -1,5 +1,22 @@
 from collections import OrderedDict
 
+import pyproj 
+import math
+
+def range_test(long1, lat1, long2, lat2, radius):
+    """ Generates a True of False result based on a tests if two coordinates are within a radius (in m) of each other
+    """
+    proj_longlat = pyproj.Proj(init = 'epsg:4326')
+    proj_metric = pyproj.Proj(init = 'epsg:3857')
+    x1,y1 = pyproj.transform(proj_longlat, proj_metric, long1, lat1)
+    x2,y2 = pyproj.transform(proj_longlat, proj_metric, long2, lat2)
+    distance = math.sqrt((x2-x1)**2+(y2-y1)**2)
+    if distance <= radius:
+        return True
+        print('School distance: {0}'.format(distance))
+    else:
+        return False
+
 def flatten_keys(dictionary, sep='_', progress=None, base_key=''):
     """Generates a list of keys in a dictionary, using
     the separator value provided to build a path for
