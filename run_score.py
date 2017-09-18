@@ -1,4 +1,3 @@
-import shapely.geometry
 import pyproj
 import csv
 import math
@@ -27,30 +26,7 @@ se_corner = shapely.geometry.Point(-87.73, 41.97)
 
 step_size = 5000
 
-proj_longlat = pyproj.Proj(init = 'epsg:4326')
-proj_metric = pyproj.Proj(init = 'epsg:3857')
-
-nw_metric = pyproj.transform(proj_longlat, proj_metric, nw_corner.x, nw_corner.y)
-se_metric = pyproj.transform(proj_longlat, proj_metric, se_corner.x, se_corner.y)
-
-gridpoints = []
-x = nw_metric[0]
-while x < se_metric[0]:
-    y = nw_metric[1]
-    while y < se_metric[1]:
-        point_longlat = shapely.geometry.Point(pyproj.transform(proj_metric,
-        proj_longlat, x, y))
-        gridpoints.append(point_longlat)
-        y += step_size
-    x += step_size
-
-with open('data/csv-out/grid.csv', 'w') as of:
-    of.write('long,lat\n')
-    for p in gridpoints:
-        of.write('{0:f},{1:f}\n'.format(p.x, p.y))
-
-print('Grid Complete')
-
+maptools.grid_write_csv(nw_corner, se_corner, step_size)
 
 with open('data/csv-out/score-out.csv','w') as score:
     fieldnames = ['lat', 'long', 'has_school']
