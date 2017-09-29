@@ -1,6 +1,7 @@
 import pyproj
 import csv
 import math
+import shapely
 
 from core import maptools
 from core.config import AppConfig

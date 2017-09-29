@@ -45,7 +45,7 @@ class AppConfig(Singleton):
                 relative_path)
 
         # Let exceptions bubble up?
-        config_file = open(config_path, 'rb')
+        config_file = open(config_path, 'r')
         tmp_config = json.load(config_file, object_pairs_hook=OrderedDict)
         config_file.close()
 
