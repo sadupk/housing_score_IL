@@ -35,20 +35,32 @@ score_out = pd.read_csv(grid_path)
 schools_path = app_config.get('data_sources.schools.relative_path')
 schools = pd.read_csv(schools_path)
 
-score_out['has_school'] = [False]*score_out.shape[0]
+pre_path = app_config.get('data_sources.day_care.relative_path')
+day_cares = pd.read_csv(pre_path)
 
-for index, score_row in score_out.iterrows():
+score_out['has_school'] = [False]*score_out.shape[0]
+score_out['has_day_care'] = [False]*score_out.shape[0]
+
+for i_score, score_row in score_out.iterrows():
     grid_long, grid_lat = score_row[['long','lat']]
     print('Searching school around longitude, latitude'
     '{0},{1}'.format(grid_long, grid_lat))
-    for i, school in schools.iterrows():
+    for i_school, school in schools.iterrows():
         school_long, school_lat, school_name = school[['LONCOD09','LATCOD09', 'SCHNAM09']]
-        if score_out.get_value(index,'has_school') == False:
+        if score_out.get_value(i_score,'has_school') == False:
             is_in_radius = maptools.range_test(grid_long,
                     grid_lat, school_long, school_lat, 1000)
             if is_in_radius == True:
-                score_out.set_value(index, 'has_school', True)
+                score_out.set_value(i_score, 'has_school', True)
                 print('School {0} within radius!'.format(school_name))
                 break 
-                                    
+    for i_day_care, day_care in day_cares.iterrows():
+        day_care_long, day_care_lat, day_care_name = day_care[['longitude','latitude', 'name']]
+        if score_out.get_value(i_score,'has_day_care') == False:
+            is_in_radius = maptools.range_test(grid_long,
+                    grid_lat, day_care_long, day_care_lat, 1000)
+            if is_in_radius == True:
+                score_out.set_value(i_score, 'has_day_care', True)
+                print('Day care {0} within radius!'.format(day_care_name))
+                break 
 score_out.to_csv(app_config.get('output_relative_path.score'))

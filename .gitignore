@@ -6,3 +6,5 @@ core/__pycache__/
 data/csv-out/\.~lock\.score-out\.csv#
 
 data/csv-out/score-out\.csv
+
+data/csv-out/
