@@ -1,6 +1,3 @@
-"""
-Manages the config for this environment.
-"""
 import json
 
 from os import path

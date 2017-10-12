@@ -1,5 +1,21 @@
 {
 	"google_api": {
 		"api_key": "AIzaSyDdNJk_vRMkhnLgP3yT5zCtseJmnjktUG0"
-	}
+	},
+    "output_relative_path": {
+        "score": "data/csv-out/score-out.csv",
+        "grid": "data/csv-out/grid.csv"
+    },
+    "data_sources": {
+        "schools":{
+            "relative_path": "data/csv-source/schools-IL.csv",
+            "range": "5000",
+            "points": "1"
+        },
+        "day_care":{
+            "relative_path":"data/csv-source/day-care.csv",
+            "range": "5000",
+            "points": "1"
+        }
+    }   
 }

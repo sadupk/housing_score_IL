@@ -2,3 +2,7 @@
 core/__pycache__/
 
 *.swp
+
+data/csv-out/\.~lock\.score-out\.csv#
+
+data/csv-out/score-out\.csv
